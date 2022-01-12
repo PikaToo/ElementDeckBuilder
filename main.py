@@ -367,14 +367,6 @@ def main():
                                             if change[0] == dy and change[1] == dx:     # seeing if the element is in the list
                                                 if deck[dy][dx] != change[2]:       # seeing if it was used (i.e. changed)
                                                     valid = False                       # if consumed, cannot do another synergy.
-                                                    print("Used")
-                                                
-                                            # same process with the adjecent, but only if it was consumed.
-                                            if change[0] == adjacency[0] and change[1] == adjacency[1]:
-                                                print("Already used")
-                                                if deck[adjacency[0]][adjacency[1]] != change[2]:
-                                                    valid = False  
-                                                # reaction system not the best. sometimes does weird things with double consumption.
 
                                         if valid:   # only valid changes are done.
                                             gold_earnt += gold_from_reaction
