@@ -365,16 +365,25 @@ def main():
                                         valid = True
                                         for change in change_list:
                                             if change[0] == dy and change[1] == dx:     # seeing if the element is in the list
-                                                if deck[dy][dx] != change[2]:       # seeing if it was used (i.e. changed)
+                                                if deck[dy][dx] != change[2]:           # seeing if it was used (i.e. changed)
                                                     valid = False                       # if consumed, cannot do another synergy.
 
                                         if valid:   # only valid changes are done.
                                             gold_earnt += gold_from_reaction
-                                            # then tells both substances to later change their new ones post-synergy
                                             if reactants[0] != products[0]:             # only adds the change if it changes something.
                                                 change_list.append((dy, dx, products[0]))
+
+                                            # seeing how the adjacent should react.
                                             if reactants[1] != products[1]:
-                                                change_list.append((adjacency[1], adjacency[0], products[1]))
+                                                change = True
+                                                for change_2 in change_list:
+                                                    # if it was already consumed before, won't react.
+                                                    # you can still double-use it if it always is the adjacent, never if it is the main.
+                                                    if change_2[0] == adjacency[1] and change_2[1] == adjacency[0]:
+                                                        change = False
+                                                        break
+                                                if change:
+                                                    change_list.append((adjacency[1], adjacency[0], products[1]))
                                             previous_reactions.append(synergy)
                     
                     # giving gold
