@@ -1390,7 +1390,7 @@ def element_interior(window, x, y, element, mouse_rect):
         ("q", (250, 180, 200)),     # q | pale peach
         ("d", (30, 100, 30)),       # d | dark green
         ("Q", (200, 180, 100)),     # Q | yellowish-white
-        ("h", (200, 160, 90)),     # h | brownish-white
+        ("h", (200, 160, 90)),      # h | brownish-white
         ("A", (255, 220, 0)),       # A | gold 
         ("n", (10, 10, 10)),        # n | light black  
         ("T", (100, 200, 255)),     # T | turquoise
