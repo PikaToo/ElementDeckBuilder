@@ -40,53 +40,53 @@ element_list = (
         ("Earthquake",      3,      " "),
         ("Egg",             3,      " "),
         ("Ash",             3,      " "),
-        ("Glassware",       4,     " "),
-        ("Life",            4,     " "),
-        ("Hurricane",       4,     " "),
-        ("Rain",            4,     " "),
-        ("Volcano",         4,     " "),
-        ("Wave",            4,     " "),
-        ("Plants",          4,     " "),
-        ("Bird",            4,     " "),
-        ("Fish",            4,     " "),
-        ("House",           4,     " "),
-        ("Landslide",       4,     " "),
-        ("Gold",            4,     " "),
-        ("Sandstorm",       5,     " "),
-        ("Cactus",          5,     " "),
-        ("Alcohol",         5,     " "),
-        ("Cola",            5,     " "),
-        ("Angler",          5,     " "),
-        ("Miner",           5,     " "),
-        ("Blizzard",        5,     " "),
-        ("Duststorm",       5,     " "),
-        ("Snow",            5,     " "),
-        ("Tsunami",         5,     " "),
-        ("Robot",           5,     " "),
-        ("Island",          5,     " "),
-        ("Beach",           5,     " "),
-        ("Seeds",           5,     " "),
-        ("Wood",            5,     " "),
-        ("Coal",            5,     " "),
-        ("Oil",             5,     " "),
-        ("Natural Gas",     5,     " "),
-        ("Boat",            5,     " "),
-        ("Human",           6,     " "),
-        ("Music",           6,     " "),
-        ("Thunder",         6,     " "),
-        ("Avalanche",       6,     " "),
-        ("Snowman",         6,     " "),
-        ("AI",              6,     " "),
-        ("Air",             6,     " "),
-        ("Beast",           6,     " "),
-        ("Pirate",          6,     " "),
-        ("Love",            7,     " "),
-        ("Android",         7,     " "),
-        ("Phoenix",         7,     " "),
-        ("Dragon",          7,     " "),
-        ("Human",           7,     " "),
-        ("Vocaloid",        7,     " "),
-        ("Hero",            7,     " "),
+        ("Glassware",       4,      " "),
+        ("Life",            4,      " "),
+        ("Hurricane",       4,      " "),
+        ("Rain",            4,      " "),
+        ("Volcano",         4,      " "),
+        ("Wave",            4,      " "),
+        ("Plants",          4,      " "),
+        ("Bird",            4,      " "),
+        ("Fish",            4,      " "),
+        ("House",           4,      " "),
+        ("Landslide",       4,      " "),
+        ("Gold",            4,      " "),
+        ("Human",           4,      " "),
+        ("Sandstorm",       5,      " "),
+        ("Cactus",          5,      " "),
+        ("Alcohol",         5,      " "),
+        ("Cola",            5,      " "),
+        ("Angler",          5,      " "),
+        ("Miner",           5,      " "),
+        ("Blizzard",        5,      " "),
+        ("Duststorm",       5,      " "),
+        ("Snow",            5,      " "),
+        ("Tsunami",         5,      " "),
+        ("Robot",           5,      " "),
+        ("Island",          5,      " "),
+        ("Beach",           5,      " "),
+        ("Seeds",           5,      " "),
+        ("Wood",            5,      " "),
+        ("Coal",            5,      " "),
+        ("Oil",             5,      " "),
+        ("Natural Gas",     5,      " "),
+        ("Boat",            5,      " "),
+        ("Music",           6,      " "),
+        ("Thunder",         6,      " "),
+        ("Avalanche",       6,      " "),
+        ("Snowman",         6,      " "),
+        ("AI",              6,      " "),
+        ("Air",             6,      " "),
+        ("Beast",           6,      " "),
+        ("Pirate",          6,      " "),
+        ("Love",            7,      " "),
+        ("Android",         7,      " "),
+        ("Phoenix",         7,      " "),
+        ("Dragon",          7,      " "),
+        ("Human",           7,      " "),
+        ("Vocaloid",        7,      " "),
+        ("Hero",            7,      " "),
     )
 
 def gold_from(element):
@@ -95,16 +95,19 @@ def gold_from(element):
     for item in element_list:
         if item[0] == element:
             return item[1]
+    return 0                        # if can't be identified
 
 def description_of(element):
     description = []
     for line in element_list:
-        if line[0] == element:
-            i = 2
+        if line[0] == element:                  # descriptions currently aren't used, despite being available.
+            i = 2                               # this is because I am too lazy to add any.
             while i < len(line):
                 description.append(line[i])
                 i += 1
             return description
+    print(element)
+    return ["This element is broken.", "Please inform the developer about this."]    # if no description is found.
 
 def first_empty_slot_in(deck):
     x = 0
