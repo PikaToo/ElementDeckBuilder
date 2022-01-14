@@ -5,30 +5,6 @@ import draw
 from draw import gold_from, pick_for_shop, first_empty_slot_in
 from reactions import check_for_synergy
 
-# TODO
-# more combinations
-#   balancing of current ones:
-#       e.g.
-#       Living being strats
-#       Robot strats
-#       Fire strats
-#       Ocean strats
-#       Sandstorm strats
-#       Snow strats
-#       Gold strats
-#       Focus especially more so on instant money from merges.
-#   after balancing, change score brackets.
-#
-# possible new starting symbols: void, light
-# potentially add food combinations
-#   humans eat food
-#   food buffs other food
-#   beast + human --> cow + human
-#   cow + water/plants --> milk
-#   milk + ice/snow --> ice cream
-#   milk + fire --> cheese
-#   egg + cheese --> omelette
-
 # DEBUG // FPS checking
 # tick = pygame.time.Clock()
 #         tick.tick()
