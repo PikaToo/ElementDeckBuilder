@@ -5,88 +5,100 @@ pygame.font.init()
 big_font = pygame.font.SysFont('arial', 70)
 font = pygame.font.SysFont('arial', 40)
 medium_font = pygame.font.SysFont('arial', 30)
-small_font = pygame.font.SysFont('arial', 20)
+small_font = pygame.font.SysFont('arial', 25)
 tiny_font = pygame.font.SysFont('arial', 15)
 
 gold_particle_list = []
 override_store = False
 
+
+################# no drawing stuff yet, starts later.
+
+
 def reset_gold_particle_list():
+    global gold_particle_list
     gold_particle_list = []
 
 element_list = (
-        ("Air",             1,      " "),
-        ("Earth",           1,      " "),
-        ("Fire",            1,      " "),
-        ("Water",           1,      " "),
-        ("Dust",            2,      " "),
-        ("Energy",          2,      " "),
-        ("Clay",            2,      " "),
-        ("Wind",            2,      " "),
-        ("Lava",            2,      " "),
-        ("Cold",            2,      " "),
-        ("Steam",           2,      " "),
-        ("Stone",           2,      " "),
-        ("Carbon Dioxide",  2,      " "),
-        ("Metal",           3,      " "),
-        ("Ceramic",         3,      " "),
-        ("Tornado",         3,      " "),
-        ("Electricity",     3,      " "),
-        ("Sand",            3,      " "),
-        ("Ice",             3,      " "),
-        ("Cloud",           3,      " "),
-        ("Mountain",        3,      " "),
-        ("Ocean",           3,      " "),
-        ("Earthquake",      3,      " "),
-        ("Egg",             3,      " "),
-        ("Ash",             3,      " "),
-        ("Glassware",       4,      " "),
-        ("Life",            4,      " "),
-        ("Hurricane",       4,      " "),
-        ("Rain",            4,      " "),
-        ("Volcano",         4,      " "),
-        ("Wave",            4,      " "),
-        ("Plants",          4,      " "),
-        ("Bird",            4,      " "),
-        ("Fish",            4,      " "),
-        ("House",           4,      " "),
-        ("Landslide",       4,      " "),
-        ("Gold",            4,      " "),
-        ("Human",           4,      " "),
-        ("Sandstorm",       5,      " "),
-        ("Cactus",          5,      " "),
-        ("Alcohol",         5,      " "),
-        ("Cola",            5,      " "),
-        ("Angler",          5,      " "),
-        ("Miner",           5,      " "),
-        ("Blizzard",        5,      " "),
-        ("Duststorm",       5,      " "),
-        ("Snow",            5,      " "),
-        ("Tsunami",         5,      " "),
-        ("Robot",           5,      " "),
-        ("Island",          5,      " "),
-        ("Beach",           5,      " "),
-        ("Seeds",           5,      " "),
-        ("Wood",            5,      " "),
-        ("Coal",            5,      " "),
-        ("Oil",             5,      " "),
-        ("Natural Gas",     5,      " "),
-        ("Boat",            5,      " "),
-        ("Music",           6,      " "),
-        ("Thunder",         6,      " "),
-        ("Avalanche",       6,      " "),
-        ("Snowman",         6,      " "),
-        ("AI",              6,      " "),
-        ("Air",             6,      " "),
-        ("Beast",           6,      " "),
-        ("Pirate",          6,      " "),
-        ("Love",            7,      " "),
-        ("Android",         7,      " "),
-        ("Phoenix",         7,      " "),
-        ("Dragon",          7,      " "),
-        ("Human",           7,      " "),
-        ("Vocaloid",        7,      " "),
-        ("Hero",            7,      " "),
+#       element           price     description
+        ("Air",             1,      "Nitrogen and oxygen among other gasses."),
+        ("Earth",           1,      "Made up of minerals and matter in the ground."),
+        ("Fire",            1,      "Product of combustion."),
+        ("Water",           1,      "Life's basis."),
+        ("Dust",            2,      "Various fine particles."),
+        ("Energy",          2,      "Supposedly the ability to do work."),
+        ("Clay",            2,      "Soil with ceramic properties."),
+        ("Wind",            2,      "Air in motion."),
+        ("Lava",            2,      "The molten form of rocks."),
+        ("Cold",            2,      "A lack of heat."),
+        ("Steam",           2,      "The gaseous form of water."),
+        ("Stone",           2,      "A solid collection of minerals."),
+        ("Carbon Dioxide",  2,      "A greenhouse gas made from combustion."),
+        ("Metal",           3,      "Lustrous, ductile, conductive, malleable."),
+        ("Ceramic",         3,      "A product of pottery."),
+        ("Tornado",         3,      "Fast-spinning and destructive wind."),
+        ("Electricity",     3,      "Formed from electric charges."),
+        ("Sand",            3,      "Apparently course, rough, and irritating."),
+        ("Ice",             3,      "Solid form of water."),
+        ("Cloud",           3,      "Tiny and floating particles."),
+        ("Mountain",        3,      "A big pile of ground."),
+        ("Ocean",           3,      "Water, but more of it."),
+        ("Earthquake",      3,      "Moving ground."),
+        ("Egg",             3,      "A shell containing life."),
+        ("Ash",             3,      "Remains of the fuel of combustion."),
+        ("Permafrost",      3,      "Frozen ground."),
+        ("Light",           3,      "Illuminating radiation."),
+        ("Tumbleweed",      3,      "A part of a plant that has detached and moved through wind."),
+        ("Glassware",       4,      "Transparent and brittle."),
+        ("Life",            4,      "The characteristic that differentiates the animate and inanimate."),
+        ("Hurricane",       4,      "Spiral columns of hot and wet air."),
+        ("Rain",            4,      "Falling clouds."),
+        ("Volcano",         4,      "A mountain that can shoot lava."),
+        ("Wave",            4,      "The ocean's preferred method of energy transfer."),
+        ("Plants",          4,      "Generally photosynthesize."),
+        ("Bird",            4,      "A feathered animal closely related to dinosaurs."),
+        ("Fish",            4,      "Aquatic animals with gils."),
+        ("House",           4,      "A nice place to live."),
+        ("Landslide",       4,      "When gravity meets slopes."),
+        ("Human",           4,      "Featherless biped."),
+        ("Glacier",         4,      "Like ice, but denser."),
+        ("Turtle",          4,      "Semi-aquatic omnivores with shells."),
+        ("Seeds",           4,      "Like an egg, but for a plant."),
+        ("Beast",           5,      "Fish who learnt to walk and developed lungs."),
+        ("Sandstorm",       5,      "Wind with sand in it."),
+        ("Cactus",          5,      "Like other plants, but stronger."),
+        ("Alcohol",         5,      "Seems a bit dangerous to just leave here."),
+        ("Cola",            5,      "Water with some spice to it."),
+        ("Angler",          5,      "One who angles."),
+        ("Miner",           5,      "Likely is also a crafter."),
+        ("Blizzard",        5,      "The worst parts of snow and wind."),
+        ("Duststorm",       5,      "Wind with dust in it."),
+        ("Snow",            5,      "A mix between ice and powdered sugar."),
+        ("Tsunami",         5,      "Strong waves that hold huge amounts of water."),
+        ("Robot",           5,      "A programmable machine."),
+        ("Island",          5,      "A lot of ground in the ocean."),
+        ("Beach",           5,      "A coast with lots of tiny rocks."),
+        ("Wood",            5,      "The stem of a tree."),
+        ("Coal",            5,      "Rocks that burn well."),
+        ("Oil",             5,      "A burnable liquid."),
+        ("Natural Gas",     5,      "Like oil, but lighter."),
+        ("Boat",            5,      "A means for land creatures to traverse water."),
+        ("Pirate",          5,      "Someone who would download a car."),
+        ("Will o' Wisp",    5,      "A ghost light that misleads travellers."),
+        ("Penguin",         5,      "A flightless bird that lives in the cold."),
+        ("Gold",            6,      "Heavy, soft, and pretty."),
+        ("Music",           6,      "Arranged sounds."),
+        ("Thunder",         6,      "The power of Zeus."),
+        ("Avalanche",       6,      "The mass-movement of snow."),
+        ("Snowman",         6,      "A cute sculpture of snow."),
+        ("AI",              6,      "The ability for a machine to act based on the environment."),
+        ("Android",         7,      "An artifically-created humanoid."),
+        ("Vocaloid",        7,      "A robot who loves to sing."),
+        ("Hero",            7,      "A brave saviour with power, wisdom, and courage."),
+        ("Angel",           7,      "A divine creature that should have many more eyes than depicted here."),
+        ("Love",            8,      "Attraction from living beings."),
+        ("Phoenix",         8,      "A legendary immortal bird made of fire."),
+        ("Dragon",          8,      "Large, wise, and flying mythical creatures."),
     )
 
 def gold_from(element):
@@ -100,14 +112,54 @@ def gold_from(element):
 def description_of(element):
     description = []
     for line in element_list:
-        if line[0] == element:                  # descriptions currently aren't used, despite being available.
-            i = 2                               # this is because I am too lazy to add any.
-            while i < len(line):
-                description.append(line[i])
-                i += 1
+        if line[0] == element:
+            text = line[2]
+
+            # transforms the description into a list of each word
+            words = []
+            word = ""
+            for letter in text:
+                word += letter
+                if letter == " " or letter == "." or letter == "," or letter == "!" \
+                            or letter == "?" or letter == ":" or letter == ";":
+                    words.append(word)
+                    word = ""
+            
+            # turns the list of each word into a list of each line
+            i = 0
+
+            # keeps trying to add words so long as there are some in the list.
+            while len(words) >= (i+1):
+                
+                current_line = []
+                current_line_length = 0
+
+                # keeps adding words, stops when it exceeds
+                while current_line_length < 380 and len(words) >= (i+1): 
+                    current_line.append(words[i])
+
+                    current_line_length = 0
+                    for a_word in current_line:
+                        current_line_length += small_font.size(a_word)[0]
+                    
+                    i += 1
+                
+                # removes most recent word if exceeded and goes back a word for the next iteration
+                if current_line_length >= 380:
+                    i -= 1
+                    del current_line[-1]
+
+                # converts the list of words into one strong and addits it to the description
+                sentence = ""
+                for b_word in current_line:
+                    sentence += b_word
+                description.append(sentence)
+            
             return description
+    
+    # if nothing is found, prints the element for bug-testing and gives error message in description.
     print(element)
-    return ["This element is broken.", "Please inform the developer about this."]    # if no description is found.
+    return ["This element is broken.", "Please inform the developer about this."]
 
 def first_empty_slot_in(deck):
     x = 0
@@ -133,6 +185,10 @@ def pick_for_shop(luck):
         i += element[1]
         shop_list.append(element[0])
     return shop_list
+
+
+################# drawing stuff starts from here
+
 
 def ui(window, gold):
     pygame.draw.rect(window, (30, 30, 30), pygame.Rect(50, 50, 670, 500))
@@ -230,7 +286,7 @@ def gold_animation(window):
         if particle[2] > 600:
             gold_particle_list.remove(particle)
 
-# <name> = [
+# <name>: (
 #     "              ",
 #     "              ",
 #     "              ",
@@ -245,7 +301,7 @@ def gold_animation(window):
 #     "              ",
 #     "              ",
 #     "              "
-# ]
+# )
 
 icon_dictionary = {
 "Air": (
@@ -698,19 +754,19 @@ icon_dictionary = {
 ),
 "Snow": (
     "              ",
-    "    WWWWWWW   ",
-    "  WWWWWWWWWW  ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "      WW      ",
+    "     WWWWWW   ",
     "   WWWWWWWWW  ",
-    "    WWWWWW    ",
-    "            w ",
-    "  w           ",
-    "       WWWW   ",
-    "      WWWWWW  ",
-    "         WW   ",
-    "   w          ",
-    "           w  ",
-    "        w     ",
-    "   w          "
+    " WWWWWWWWWWWW "
 ),
 "Snowman": (
     "              ",
@@ -746,19 +802,19 @@ icon_dictionary = {
 ),
 "Volcano": (
     "              ",
-    "  R     R   R ",
-    "    R   R  R  ",
+    "  RO    R  OR ",
+    "    RO  R OR  ",
     "     RR   R   ",
     "      RR      ",
-    "     bbbb     ",
-    "    bbbbbb    ",
-    "    bbbbbb    ",
-    "   bbbbbbbb   ",
-    "   bbbbbbbb   ",
-    "  bbbbbbbbbb  ",
-    "  bbbbbbbbbb  ",
+    "     RbRRb    ",
+    "    Rbbbbb    ",
+    "    bbbbbbbR  ",
+    "   bbbbbbbbR  ",
+    "  RbbbbbbbbRO ",
+    " RbbbbbbbbbbR ",
+    " RbbbbbbbbbbR ",
     " bbbbbbbbbbbb ",
-    " bbbbbbbbbbbb "
+    "Rbbbbbbbbbbbb "
 ),
 "Mountain": (
     "              ",
@@ -1294,7 +1350,7 @@ icon_dictionary = {
     "  TT WWWW TT  ",
     "  T   WW   T  ",
     " T  WwTTwW  T ",
-    " T W wTTw W T ",
+    " T  WwTTwW  T ",
     "   N wwTw N   ",
     "   N wwww N   ",
     "   W NwwN W   ",
@@ -1367,6 +1423,134 @@ icon_dictionary = {
     "    NNNNNN    ",
     "    NNNNNN    "
 ),
+"Glacier": (
+    "        W     ",
+    "       WW     ",
+    "       WW     ",
+    "      WWW     ",
+    "      WWWW    ",
+    "     WWWWWW   ",
+    "    WWWWWWW   ",
+    "   WWWWlWWW   ",
+    "   WWWllWWWWW ",
+    " WWWWWlllWWWWW",
+    "WWWWllllllWWWW",
+    "   llllllllll ",
+    "    lllllll   ",
+    "      ll      "
+),
+"Permafrost": (
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "       W      ",
+    "   W  WW  WW  ",
+    " WWWWWWWWWWWW ",
+    " WiiWWWiWWiiW ",
+    " iiiiWWiiWiii ",
+    "  iiiiWiiiii  ",
+    "   iiiiiiii   ",
+    "    iiiiii    ",
+    "              "
+),
+"Light": (
+    "              ",
+    "       Y      ",
+    "      YYY     ",
+    "   Y   Y   Y  ",
+    "    Y  Y  Y   ",
+    "     Y Y Y    ",
+    "  Y   YYY   Y ",
+    " YYYYYYYYYYYYY",
+    "  Y   YYY   Y ",
+    "     Y Y Y    ",
+    "    Y  Y  Y   ",
+    "   Y   Y   Y  ",
+    "      YYY     ",
+    "       Y      "
+),
+"Will o' Wisp": (
+    " YYYY    YY   ",
+    "YYWWYY YYY  YY",
+    "YWWWWYYYY  YY ",
+    "YWWWWYYY  YYY ",
+    "YYWWYY    YY  ",
+    " YYYY    YYYY ",
+    "        YYWWYY",
+    "        YWWWWY",
+    " YYYY   YWWWWY",
+    "YYWWYY  YYWWYY",
+    "YWWWWYY  YYYY ",
+    "YWWWWYYY      ",
+    "YYWWYYYYYY    ",
+    " YYYYY        "
+),
+"Penguin": (
+    "              ",
+    "     NNNN     ",
+    "    NNWWNN    ",
+    "    NlWWlN    ",
+    "    NWYYWN    ",
+    "     NNNN     ",
+    "    NNWWNN    ",
+    "   NNWWWWNN  ",
+    "  NNWWWWWWNN  ",
+    " NNNWWWWWWNNN ",
+    " N NNWWWWNN N ",
+    "    NNNNNN    ",
+    "     Y  Y     ",
+    "    YY  YY    "
+),
+"Turtle": (
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "       ddd    ",
+    " J    ddddd   ",
+    "JNJ  ddddddd  ",
+    "JJJJdddddddd J",
+    " JJddddddddddJ",
+    "   ddddddddd  ",
+    "      J   J   ",
+    "     JJ  JJ   ",
+    "              ",
+    "              "
+),
+"Tumbleweed": (
+    "              ",
+    "              ",
+    "b  b      b  b",
+    "b b  b  b  b b",
+    " b  b    b  b ",
+    "  bb b  b bb  ",
+    "  b b bb b b  ",
+    "b  b b  b b  b",
+    "b bb b  b bb b",
+    " b  b    b  b ",
+    "  b  b  b  b  ",
+    "bb b b  b b bb",
+    "    b bb b    ",
+    "     bbbb     "
+),
+"Angel": (
+    "    YYYYYY    ",
+    "yy         WW ",
+    "  y   WWWWWW  ",
+    "     WqqWW    ",
+    "WWW WqqqqW WWW",
+    " WWW  qq  WWW ",
+    "    WWWWWW    ",
+    "   WWWWWWWW   ",
+    "yy W WWWW W yy",
+    "   q WWWW q   ",
+    "   q WWWW q   ",
+    "     WW q     ",
+    "  yy q  q  yy ",
+    " y   q  q    y"
+),
 }
 
 
@@ -1376,8 +1560,12 @@ def element_interior(window, x, y, element, mouse_rect):
     y += 8
     color_list = (
         ("Y", (200, 200, 50)),      # Y | yellow
+        ("y", (250, 250, 120)),      # y | bright yellow
+        ("d", (30, 100, 30)),       # d | dark green
         ("G", (50, 250, 50)),       # G | green
+        ("J", (150, 250, 150)),     # J | light green
         ("g", (80, 80, 80)),        # g | gray
+        ("i", (150, 150, 240)),     # i | lighter blue
         ("l", (100, 100, 200)),     # l | light blue
         ("B", (50, 50, 250)),       # B | blue
         ("b", (150, 100, 30)),      # b | brown
@@ -1391,7 +1579,6 @@ def element_interior(window, x, y, element, mouse_rect):
         ("N", (0, 0, 0)),           # N | black
         ("p", (180, 50, 250)),      # p | pink
         ("q", (250, 180, 200)),     # q | pale peach
-        ("d", (30, 100, 30)),       # d | dark green
         ("Q", (200, 180, 100)),     # Q | yellowish-white
         ("h", (200, 160, 90)),      # h | brownish-white
         ("A", (255, 220, 0)),       # A | gold 
@@ -1429,4 +1616,4 @@ def element_interior(window, x, y, element, mouse_rect):
         y = 340
         for line in description_of(element):
             window.blit(small_font.render(line, False, (180, 180, 180)), (755, y))
-            y += 18
+            y += 20
