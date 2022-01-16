@@ -5,10 +5,7 @@ import draw
 from draw import gold_from, pick_for_shop, first_empty_slot_in
 from reactions import check_for_synergy
 
-# DEBUG // FPS checking
-# tick = pygame.time.Clock()
-#         tick.tick()
-#         print(int(tick.get_fps()))
+tick = pygame.time.Clock()
 
 # Game set up
 pygame.init()
@@ -135,8 +132,8 @@ def lose_screen(gold, payment):
         (1001, 3000, "C", (200, 100, 0)),
         (3001, 10000, "B", (100, 100, 0)),
         (10001, 50000, "A", (0, 240, 0)),
-        (50001, 100000, "S", (240, 180, 0)),
-        (100001, 150000, "SS", (240, 220, 0)),
+        (50001, 150000, "S", (240, 180, 0)),
+        (150001, 250000, "SS", (240, 220, 0)),
     )
     for score in score_list:
         if score[0] <= total_gold_earnt <= score[1]:
@@ -202,6 +199,10 @@ def main():
     bought_from_store = False
     previous_click_status = False
     previous_reactions = []
+    
+    show_FPS = False
+    previous_backspace = False
+    FPS_list = [60, 60, 60, 60, 60] 
 
     # main loop
     while True:
@@ -261,6 +262,7 @@ def main():
             y += 89
             x = 75
 
+        # store things
         x = 765
         y = 184
         for element in purchase_selection:
@@ -321,8 +323,8 @@ def main():
 
                     # seeing adjacency and comparing with the synergy list.
                     if element != "Empty":
-                        adjacenct_list = ((dx, dy+1), (dx, dy-1), (dx+1, dy+1), (dx+1, dy-1), (dx+1, dy),
-                                    (dx-1, dy+1), (dx-1, dy-1), (dx-1, dy))
+                        adjacenct_list = ((dx-1, dy+1), (dx, dy+1), (dx+1, dy+1), (dx-1, dy), (dx+1, dy),
+                                    (dx-1, dy-1), (dx, dy-1), (dx+1, dy-1),)
                         for adjacency in adjacenct_list:
                             # only does it for valid adjacencies (i.e. not off the map, not empty)
                             if 0 <= adjacency[1] <= 3 and 0 <= adjacency[0] <= 6:
@@ -343,6 +345,7 @@ def main():
                                             if change[0] == dy and change[1] == dx:     # seeing if the element is in the list
                                                 if deck[dy][dx] != change[2]:           # seeing if it was used (i.e. changed)
                                                     valid = False                       # if consumed, cannot do another synergy.
+                                                    break
 
                                         if valid:   # only valid changes are done.
                                             gold_earnt += gold_from_reaction
@@ -388,8 +391,34 @@ def main():
             previous_click_status = True
         else: 
             previous_click_status = False
-        
-        
+
+        # checking to see if should display FPS
+        if pygame.key.get_pressed()[K_BACKSPACE]:
+            if previous_backspace == False:
+                if show_FPS:      
+                    show_FPS = False
+                else:
+                    show_FPS = True
+            previous_backspace = True
+        else:
+            previous_backspace = False
+
+     
+        # getting average FPS then displaying
+        tick.tick()                                 # doing this calculation even when not using it so that
+        FPS_list.append(int(tick.get_fps()))        # the FPS displayed when it is shown is more accurate
+        del FPS_list[0]
+        average_FPS = sum(FPS_list) / len(FPS_list)
+
+        if show_FPS:
+            if average_FPS < 15:
+                color = (255, 0, 0)
+            elif average_FPS < 30:
+                color = (255, 255, 0)
+            else:
+                color = (255, 255, 255)
+            window.blit(font.render(f"FPS: {average_FPS}", True, color), pygame.Rect(1050, 2, 0, 0))
+
         fpsClock.tick(FPS)
         pygame.display.update()
     
