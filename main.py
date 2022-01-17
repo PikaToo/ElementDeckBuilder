@@ -417,7 +417,7 @@ def main():
                 color = (255, 255, 0)
             else:
                 color = (255, 255, 255)
-            window.blit(font.render(f"FPS: {average_FPS}", True, color), pygame.Rect(1050, 2, 0, 0))
+            window.blit(font.render(f"FPS: {average_FPS}", True, color), pygame.Rect(1000, 2, 0, 0))
 
         fpsClock.tick(FPS)
         pygame.display.update()
