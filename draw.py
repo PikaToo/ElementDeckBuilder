@@ -9,8 +9,6 @@ small_font = pygame.font.SysFont('arial', 25)
 tiny_font = pygame.font.SysFont('arial', 15)
 
 gold_particle_list = []
-override_store = False
-
 
 ################# no drawing stuff yet, starts later.
 
@@ -64,6 +62,7 @@ element_list = (
         ("Glacier",         4,      "Like ice, but denser."),
         ("Turtle",          4,      "Semi-aquatic omnivores with shells."),
         ("Seeds",           4,      "Like an egg, but for a plant."),
+        ("Ice Brick",       4,      "Ice that has been turned into building material."),
         ("Beast",           5,      "Fish who learnt to walk and developed lungs."),
         ("Sandstorm",       5,      "Wind with sand in it."),
         ("Cactus",          5,      "Like other plants, but stronger."),
@@ -86,19 +85,24 @@ element_list = (
         ("Pirate",          5,      "Someone who would download a car."),
         ("Will o' Wisp",    5,      "A ghost light that misleads travellers."),
         ("Penguin",         5,      "A flightless bird that lives in the cold."),
+        ("Ice Wall",        5,      "A solid layer of ice brick that insulates quite well."),
         ("Gold",            6,      "Heavy, soft, and pretty."),
         ("Music",           6,      "Arranged sounds."),
         ("Thunder",         6,      "The power of Zeus."),
         ("Avalanche",       6,      "The mass-movement of snow."),
         ("Snowman",         6,      "A cute sculpture of snow."),
         ("AI",              6,      "The ability for a machine to act based on the environment."),
+        ("Ice Building",    6,      "A entire structure composed of ice, fascinating."),
         ("Android",         7,      "An artifically-created humanoid."),
         ("Vocaloid",        7,      "A robot who loves to sing."),
         ("Hero",            7,      "A brave saviour with power, wisdom, and courage."),
         ("Angel",           7,      "A divine creature that should have many more eyes than depicted here."),
+        ("Royalty",         7,      "A ruler given the divine right but sadly never the divine left."),
+        ("Ice Mansion",     7,      "An expensive and quite cold place to live in."),
         ("Love",            8,      "Attraction from living beings."),
         ("Phoenix",         8,      "A legendary immortal bird made of fire."),
         ("Dragon",          8,      "Large, wise, and flying mythical creatures."),
+        ("Ice Palace",      8,      "A home to only the most extravagant."),
     )
 
 def gold_from(element):
@@ -1551,6 +1555,102 @@ icon_dictionary = {
     "  yy q  q  yy ",
     " y   q  q    y"
 ),
+"Royalty": (
+    "    A AA A    ",
+    "    AAAAAA     ",
+    "     bbbb     ",
+    "     bbbb     ",
+    "      bb      ",
+    "    PPWWPP    ",
+    "   PPPWWPPP   ",
+    "   P PWWP P   ",
+    "   b PWWP b   ",
+    "   b NNNN b   ",
+    "     PPPP     ",
+    "    PPPPPP    ",
+    " AA  b  b     ",
+    "AAAA W  W   AA"
+),
+"Ice Brick": (
+    "              ",
+    "              ",
+    "              ",
+    "              ",
+    "    iiiiiiii  ",
+    "   iiiiiiiil  ",
+    "  iiiiiiiill  ",
+    " iiiiiiiilll  ",
+    " lllllllill   ",
+    " lllllllli    ",
+    "  lllllll     ",
+    "              ",
+    "              ",
+    "              "
+),
+"Ice Wall": (
+    "              ",
+    "              ",
+    " lll llll lll ",
+    "liiiliiiiliiil",
+    "liiiliiiiliiil",
+    " llllllllllll ",
+    "liiiliiiiliiil",
+    "liiiliiiiliiil",
+    " llllllllllll ",
+    "liiiliiiiliiil",
+    "liiiliiiiliiil",
+    " lll llll lll ",
+    "              ",
+    "              "
+),
+"Ice Building": (
+    "              ",
+    "              ",
+    "              ",
+    "  llllllllll  ",
+    " llllllllllll ",
+    "llliiiiiiiilll",
+    " liiiiiiiiiil ",
+    " lillillillil ",
+    " lillillillil ",
+    " liiiilliiiil ",
+    " llllllllllll ",
+    "              ",
+    "              ",
+    "              "
+),
+"Ice Mansion": (
+    "              ",
+    "  llllllllll  ",
+    " llllllllllll ",
+    "llliiiiiiiilll",
+    " liililliliil ",
+    " lillillillil ",
+    " liiiiiiiiiil ",
+    " llllllllllll ",
+    " liiiiiiiiiil ",
+    " lillillillil ",
+    " lillillillil ",
+    " liiiilliiiil ",
+    " llllllllllll ",
+    "              "
+),
+"Ice Palace": (
+    "     A        ",
+    "     ll       ",
+    "    lllll     ",
+    "   lllllll    ",
+    "    liiil     ",
+    "    lilil  Y  ",
+    "  Y lilil  l  ",
+    "  l lilil lll ",
+    " ll liiilllll ",
+    " lllliiiiilil ",
+    " liliilliilil ",
+    " liliilliilil ",
+    " liliilliilil ",
+    "WllllllllllllW"
+),
 }
 
 
@@ -1577,7 +1677,7 @@ def element_interior(window, x, y, element, mouse_rect):
         ("w", (110, 110, 110)),     # w | light gray
         ("P", (180, 50, 250)),      # P | purple
         ("N", (0, 0, 0)),           # N | black
-        ("p", (180, 50, 250)),      # p | pink
+        ("p", (220, 50, 250)),      # p | pink
         ("q", (250, 180, 200)),     # q | pale peach
         ("Q", (200, 180, 100)),     # Q | yellowish-white
         ("h", (200, 160, 90)),      # h | brownish-white
