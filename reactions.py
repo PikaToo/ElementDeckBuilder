@@ -1,3 +1,9 @@
+from draw import element_list
+all_elements = tuple(x[0] for x in element_list)
+# getting every element through list comprehension, used for black hole
+# can later be used as a tagging system (e.g. living, ocean, etc.) to do a filter before going through 
+#   the synergy list to reduce lag when going to next cycle
+
 synergy_list = [
     #((Element 1, Element 2), (Replacement 1, Replacement 2), Money from Replacement)
     # Note: Element 1/2 can either be one element or possible elements available for the reaction.
@@ -13,18 +19,21 @@ synergy_list = [
     (("Fire", "Fire"), ("Light", "Empty"), 3), 
     (("Earth", "Water"), ("Clay", "Empty"), 3), 
     (("Water", ("Fire", "Energy")), ("Steam", "Empty"), 3), 
-    ((("Steam", "Energy"), "Cold"), ("Water", "Empty"), 3), 
-    (("Lava", ("Water", "Cold", "Ice", "Snow")), ("Stone", "Empty"), 3), 
+    (("Steam", "Cold"), ("Water", "Empty"), 3),
+    (("Energy", "Cold"), ("Empty", "Empty"), 25),
+    (("Lava", "Water"), ("Stone", "Steam"), 3), 
+    (("Water", "Sun"), ("Steam", "Sun"), 3), 
+    (("Lava", "Cold"), ("Stone", "Empty"), 3),  
     (("Stone", "Fire"), ("Metal", "Empty"), 3),
     (("Dust", "Dust"), ("Sand", "Empty"), 3), 
     (("Wind", ("Dust", "Ash", "Tumbleweed")), ("Wind", "Empty"), 5), 
     ((("Wind", "Stone"), ("Ceramic", "Glassware")), ("No Change", "Empty"), 25), 
     (("Metal", "Energy"), ("Electricity", "Empty"), 3), 
-    (("Metal", "Electricity"), ("No Change"), 5), 
-    (("Electricity", "Gold"), ("No Change"), 5), 
     (("Gold", "Gold"), ("No Change"), 2), 
     (("Clay", "Fire"), ("Ceramic", "Empty"), 3), 
     (("Sand", "Fire"), ("Glassware", "Empty"), 3), 
+    (("Clay", "Sun"), ("Ceramic", "Sun"), 3), 
+    (("Sand", "Sun"), ("Glassware", "Sun"), 3), 
     (("Glassware", ("Ceramic", "Alcohol", "Water")), ("No Change"), 5), 
     (("Ceramic", "Ceramic"), ("No Change"), 3), 
     (("Glassware", "Glassware"), ("No Change"), 3), 
@@ -32,13 +41,26 @@ synergy_list = [
     (("Cloud", ("Steam", "Cloud", "Water")), ("Rain", "Empty"), 3), 
     ((("Rain", "Cloud"), ("Electricity", "Energy")), ("Thunder", "Empty"), 3), 
     (("Thunder", "Rain"), ("No Change"), 8), 
+    (("Sun", ("Cloud", "Rain", "Thunder")), ("No Change"), 5),
     (("Rain", "Rain"), ("Rain", "Empty"), 200),  
     (("Thunder", "Thunder"), ("Thunder", "Empty"), 250),
     ((("Rain", "Thunder", "Cloud"), "Wind"), ("Empty", "Empty"), 25),  
+    ((("Energy", "Light"), ("Energy", "Light")), ("Sun", "Empty"), 3), 
+    
+    (("Sun", "Sun"), ("Black Hole", "Empty"), 3), 
+    (("Black Hole", "Black Hole"), ("Empty", "Empty"), 0), 
+    ((all_elements, "Black Hole"), ("Empty", "Empty"), -250),
     
     # pyromaniac    
     (("Fire", ("Wood", "Boat", "House")), ("Fire", "Coal"), 30), 
+    (("Fire", "Tree"), ("Fire", "Coal"), 80), 
+    (("Fire", "Forest"), ("Fire", "Coal"), 250), 
     (("Fire", ("Plants", "Dust", "Cactus", "Tumbleweed")), ("Fire", "Ash"), 50),
+    
+    (("Phoenix", ("Wood", "Boat", "House")), ("Phoenix", "Coal"), 30), 
+    (("Phoenix", "Tree"), ("Phoenix", "Coal"), 80), 
+    (("Phoenix", "Forest"), ("Phoenix", "Coal"), 250), 
+    (("Phoenix", ("Plants", "Dust", "Cactus", "Tumbleweed")), ("Phoenix", "Ash"), 50), 
 
     (("Coal", "Water"), ("Oil", "Empty"), 3), 
     (("Coal", "Air"), ("Natural Gas", "Empty"), 3), 
@@ -49,8 +71,8 @@ synergy_list = [
 
     (("Fire", "Alcohol"), ("Fire", "Fire"), 75), 
 
-    ((("Plants", "Cactus"), ("Ash", "Carbon Dioxide")), ("No Change", "Air"), 15), 
-    (("Ocean", "Carbon Dioxide"), ("Ocean", "Empty"), 15), 
+    ((("Plants", "Cactus", "Tree", "Forest"), ("Ash", "Carbon Dioxide")), ("No Change", "Air"), 15), 
+    ((("Ocean", "Swamp", "Mangrove"), "Carbon Dioxide"), ("No Change", "Empty"), 15), 
 
     # cold things
     (("Water", "Air"), ("Cold", "Empty"), 3), 
@@ -72,16 +94,14 @@ synergy_list = [
     (("Penguin", ("Permafrost", "Snow", "Glacier", "Ocean", "Cold", "Ice")), ("No Change"), 5), 
 
     # cold synergy with fire & carbon dioxide
-    (("Snow", ("Fire", "Energy")), ("Empty", "Empty"), 50), 
-    (("Avalanche", ("Fire", "Energy")), ("Empty", "Empty"), 75), 
-    (("Snowman", ("Fire", "Energy")), ("Empty", "Empty"), 125),     
-    (("Glacier", ("Fire", "Energy")), ("Water", "Carbon Dioxide"), 75), 
-    (("Permafrost", ("Fire", "Energy")), ("Earth", "Carbon Dioxide"), 75),
-
-    (("Volcano", ("Snow", "Snowman", "Avalanche", "Glacier")), ("Mountain", "Water"), 50),
-    (("Volcano", "Permafrost"), ("Mountain", "Earth"), 50), 
-    (("Lava", ("Snow", "Snowman", "Avalanche", "Glacier")), ("Stone", "Water"), 50), 
-    (("Lava", "Permafrost"), ("Stone", "Earth"), 50), 
+    ((("Fire", "Energy"), ("Snow", "Snowman", "Avalanche", "Glacier")), ("Empty", "Water"), 150),
+    ((("Fire", "Energy"), "Permafrost"), ("Empty", "Earth"), 150), 
+    ((("Phoenix", "Sun"), ("Snow", "Snowman", "Avalanche", "Glacier")), ("No Change", "Water"), 150),
+    ((("Phoenix", "Sun"), "Permafrost"), ("No Change", "Earth"), 150), 
+    (("Volcano", ("Snow", "Snowman", "Avalanche", "Glacier")), ("Mountain", "Water"), 150),
+    (("Volcano", "Permafrost"), ("Mountain", "Earth"), 150), 
+    (("Lava", ("Snow", "Snowman", "Avalanche", "Glacier")), ("Stone", "Water"), 150), 
+    (("Lava", "Permafrost"), ("Stone", "Earth"), 150), 
 
     ((("Glacier", "Permafrost", "Snow", "Ice", "Snowman", "Avalanche"), "Carbon Dioxide"), 
                 ("No Change", "Empty"), 25), 
@@ -127,6 +147,13 @@ synergy_list = [
     (("Ice Mansion", "Volcano"), ("Water", "Mountain"), 625), 
     (("Ice Palace", "Volcano"), ("Water", "Mountain"), 1080), 
 
+    (("Ice", "Phoenix"), ("Water", "Phoenix"), 5), 
+    (("Ice Brick", "Phoenix"), ("Water", "Phoenix"), 40), 
+    (("Ice Wall", "Phoenix"), ("Water", "Phoenix"), 135), 
+    (("Ice Building", "Phoenix"), ("Water", "Phoenix"), 320), 
+    (("Ice Mansion", "Phoenix"), ("Water", "Phoenix"), 625), 
+    (("Ice Palace", "Phoenix"), ("Water", "Phoenix"), 1080), 
+
     (("Ice Building", ("Human", "Angler", "Miner", "Hero")), ("No Change"), 3), 
     (("Ice Mansion", ("Royalty", "Hero")), ("No Change"), 10), 
     (("Ice Palace", "Royalty"), ("No Change"), 20), 
@@ -134,12 +161,15 @@ synergy_list = [
     # living (or close enough) things:
     (("Clay", "Energy"), ("Life", "Empty"), 3), 
 
-    (("Metal", "Life"), ("Robot", "Empty"), 3),         # robotic
-    (("Electricity", "Life"), ("AI", "Empty"), 3), 
+    (("Metal", "Gold"), ("Circuit", "Empty"), 3),                 # robotic
+    (("Metal", ("Life", "Circuit")), ("Robot", "Empty"), 3),
+    (("Circuit", ("Circuit", "Electricity")), ("AI", "Empty"), 3), 
     (("Robot", "AI"), ("Android", "Empty"), 3), 
-    (("Robot", "Electricity"), ("Robot", "Electricity"), 5), 
-    (("AI", "Electricity"), ("AI", "Electricity"), 5), 
     ((("AI", "Robot"), "Music"), ("Vocaloid", "Empty"), 3), 
+    
+    ((("Electricity", "Circuit"), "Gold"), ("No Change"), 5), 
+    (("Metal", "Electricity"), ("No Change"), 5), 
+    ((("Robot", "AI", "Vocaloid", "Android"), ("Electricity", "Metal", "Circuit")), ("No Change"), 8), 
 
     (("Stone", "Life"), ("Egg", "Empty"), 3),             # animals
     (("Egg", ("Fire", "Air", "Wind", "Energy")), ("Bird", "Empty"), 3), 
@@ -155,7 +185,7 @@ synergy_list = [
     (("Ocean", ("Egg", "Bird")), ("Fish", "Empty"), 3), 
     ((("Bird", "Egg"), ("Earth", "Mountain")), ("Beast", "Empty"), 3),
     ((("Egg", "Bird"), "Lava"), ("Phoenix", "Empty"), 3),  
-    (("Bird", "Fire"), ("Phoenix", "Empty"), 3), 
+    (("Bird", ("Fire", "Lava", "Life")), ("Phoenix", "Empty"), 3), 
     (("Beast", ("Bird", "Penguin")), ("Dragon", "Empty"), 3), 
     (("Light", "Life"), ("Will o' Wisp", "Empty"), 3), 
 
@@ -164,26 +194,59 @@ synergy_list = [
     (("Sand", ("Plants", "Seeds")), ("Cactus", "Empty"), 3),
     (("Cactus", "Light"), ("Cactus", "Empty"), 75), 
     (("Plants", "Seeds"), ("Plants", "Plants"), 3), 
-    (("Earth", "Plants"), ("Wood", "Empty"), 3), 
-    (("Seeds", ("Water", "Earth", "Rain", "Light")), ("Wood", "Empty"), 50), 
+    (("Seeds", ("Water", "Earth", "Rain", "Light")), ("Tree", "Empty"), 50), 
     (("Plants", "Wind"), ("Tumbleweed", "Empty"), 3), 
+    (("Tree", "Tree"), ("Forest", "Empty"), 3), 
 
     ((("Beast", "Bird", "Fish", "Turtle"), "Plants"), ("No Change", "Seeds"), 30),          # plant eating
     ((("Bird", "Phoenix"), "Seeds"), ("No Change", "Empty"), 50), 
 
+    # trees, swamps, and mangroves
+    ((("Human", "Earthquake", "Tsunami", "Hurricane", "Blizzard", "Sandstorm", "Duststorm", "Tornado"), "Tree"), 
+        ("No Change", "Wood"), 50), 
+    ((("Human", "Earthquake", "Tsunami", "Hurricane", "Blizzard", "Sandstorm", "Duststorm", "Tornado"), "Forest"), 
+        ("No Change", "Tree"), 250), 
+    (("Tree", "Wind"), ("Wood", "Empty"), 50), 
+    (("Tree", "Landslide"), ("Wood", "Earth"), 50), 
+
+    (("Cactus", "Sand"), ("No Change"), 8), 
+    (("Cactus", ("Beach", "Sun")), ("No Change"), 5), 
+    (("Plants", ("Plants", "Earth", "Clay", "Rain", "Sun")), ("No Change"), 3), 
+    (("Plants", ("Light", "Water")), ("Tree", "Empty"), 50), 
+    (("Tree", ("Plants", "Earth", "Clay", "Rain", "Beast", "Dragon", "Bird", "Sun")), ("No Change"), 5), 
+    (("Tree", ("Light", "Water")), ("Tree", "Empty"), 80), 
+    (("Forest", ("Plants", "Tree", "Earth", "Clay", "Rain", "Beast", "Dragon", "Bird", "Sun")), ("No Change"), 8), 
+    (("Forest", "Forest"), ("No Change"), 6), 
+    (("Forest", ("Light", "Water")), ("Forest", "Empty"), 180), 
+
+    (("Lake", ("Plants", "Tree", "Forest")), ("Swamp", "Empty"), 3),    # swamp
+    (("Swamp", "Energy"), ("Life", "Empty"), 3), 
+    (("Swamp", ("Egg", "Swamp")), ("Swamp", "Beast"), 3), 
+    (("Swamp", ("Plants", "Tree", "Beast", "Fish", "Turtle")), ("No Change"), 7), 
+    (("Swamp", "Seeds"), ("Swamp", "Tree"), 3), 
+    ((("Human", "Earthquake", "Tsunami", "Hurricane", "Blizzard", "Sandstorm", "Duststorm", "Tornado"), "Swamp"), 
+        ("No Change", "Lake"), 100),
+
+    (("Swamp", "Ocean"), ("Mangrove", "Empty"), 3),                     # mangrove
+    (("Mangrove", ("Ocean", "Bird", "Lake", "Rain")), ("No Change"), 5),
+    (("Mangrove", ("Fish", "Tree", "Plants", "Forest")), ("No Change"), 8),
+    ((("Human", "Earthquake", "Tsunami", "Hurricane", "Blizzard", "Sandstorm", "Duststorm", "Tornado"), "Mangrove"), 
+        ("No Change", "Wood"), 250),
+    ((("Mangrove", "Swamp", "Forest"), "Will o' Wisp"), ("No Change"), 8),
+
     (("Clay", "Life"), ("Human", "Empty"), 3),              # humans
     (("Human", "Human"), ("Love", "Empty"), 3), 
-    (("Wood", ("Air", "Wind")), ("Music", "Empty"), 3), 
+    (("Wood", "Wind"), ("Music", "Empty"), 3), 
     (("Wood", "Clay"), ("House", "Empty"), 3), 
     (("House", "House"), ("No Change"), 3), 
     (("House", ("Human", "Angler", "Miner")), ("No Change"), 15), 
-    ((("Human", "Hero"), ("Phoenix", "Dragon")), ("Hero", "Empty"), 300), 
+    ((("Human", "Hero"), "Phoenix"), ("Hero", "Empty"), 300), 
+    ((("Human", "Hero"), "Dragon"), ("Hero", "Empty"), 500), 
     (("Human", "Plants"), ("Human", "Alcohol"), 3), 
     (("Water", "Carbon Dioxide"), ("Cola", "Empty"), 3), 
     (("Human", "Fish"), ("Angler", "Fish"), 3), 
     (("Angler", "Fish"), ("Angler", "Empty"), 75), 
-    (("Human", "Mountain"), ("Miner", "Mountain"), 3), 
-    (("Miner", "Volcano"), ("Miner", "Lava"), 3), 
+    (("Human", "Mountain"), ("Miner", "Mountain"), 3),
     (("Miner", "Mountain"), ("Miner", "Stone"), 3), 
     (("Miner", "Stone"), ("Miner", "Metal"), 3), 
     (("Miner", "Metal"), ("Miner", "Gold"), 3), 
@@ -197,9 +260,11 @@ synergy_list = [
     # consuming things
     ((("Human", "Hero", "Miner", "Angler", "Pirate", "Royalty"), ("Alcohol", "Cola")), ("No Change", "Empty"), 75),  
     (("Angel", "Cola"), ("Angel", "Empty"), 150), 
-    (("Royalty", ("Alcohol", "Cola")), ("Hero", "Empty"), 75), 
+    (("Royalty", ("Alcohol", "Cola")), ("Royalty", "Empty"), 75), 
+    ((("Dragon", "Phoenix"), ("Alcohol", "Cola")), ("No Change", "Empty"), 50), 
     ((("Pirate", "Hero"), ("Ceramic", "Glassware")), ("No Change", "Empty"), 25), 
-    ((("Human", "Miner", "Angler", "Pirate", "Hero", "Royalty"), "Air"), ("No Change", "Carbon Dioxide"), 15), 
+    ((("Human", "Miner", "Angler", "Pirate", "Hero", "Royalty", "Bird", "Beast", "Fish", "Turtle", "Penguin", 
+        "Dragon", "Phoenix"), "Air"), ("No Change", "Carbon Dioxide"), 15), 
     
     (("Robot", "Robot"), ("No Change"), 3),                # synergies amongst selves
     ((("Robot", "AI"), "Android"), ("No Change"), 5), 
@@ -214,14 +279,9 @@ synergy_list = [
     (("Beast", "Beast"), ("No Change"), 3), 
     (("Penguin", "Penguin"), ("No Change"), 3), 
     (("Turtle", "Turtle"), ("No Change"), 3), 
-    (("Phoenix", ("Ash", "Fire", "Lava")), ("No Change"), 10), 
+    (("Phoenix", ("Ash", "Fire", "Lava", "Volcano")), ("No Change"), 10), 
     (("Dragon", ("Phoenix", "Gold")), ("No Change"), 10),     
-    (("Dragon", "Royalty"), ("Dragon", "Empty"), 200),
-    (("Phoenix", "Royalty"), ("Phoenix", "Empty"), 200),     
-    (("Plants", "Rain"), ("No Change"), 5),
-    (("Plants", "Plants"), ("No Change"), 3), 
-    (("Cactus", "Sand"), ("No Change"), 10), 
-    (("Cactus", "Beach"), ("No Change"), 5), 
+    ((("Dragon", "Phoenix"), "Royalty"), ("No Change", "Empty"), 200),
     
     (("Tumbleweed", ("Earth", "Sand", "Stone", "Clay", "Plants", "Seeds", "Dust")), 
             ("Tumbleweed", "Tumbleweed"), 10),  
@@ -254,7 +314,7 @@ synergy_list = [
     
     (("Pirate", ("Boat", "Ocean", "Beach", "Pirate")), ("No Change"), 7),
     (("Miner", ("Bird", "Human", "Angler", "Miner")), ("No Change"), 7), 
-    (("Angler", ("Human", "Ocean", "Beach", "Boat", "Angler", "Turtle")), ("No Change"), 7), 
+    (("Angler", ("Human", "Ocean", "Beach", "Boat", "Angler", "Turtle", "Lake")), ("No Change"), 7), 
     (("Hero", ("Human", "Angler", "Miner")), ("No Change"), 7), 
     (("Royalty", "Royalty"), ("Royalty", "Empty"), 300),
     (("Royalty", "Pirate"), ("Empty", "Empty"), 400),
@@ -274,6 +334,7 @@ synergy_list = [
     (("Sandstorm", "Sand"), ("No Change"), 5), 
     (("Tornado", ("Water", "Steam")), ("Hurricane", "Empty"), 3), 
     (("Ocean", ("Steam", "Fire", "Wind", "Rain", "Tornado")), ("Hurricane", "Empty"), 3), 
+    (("Ocean", "Sun"), ("Hurricane", "Sun"), 3), 
     (("Hurricane", ("Ocean", "Steam")), ("No Change"), 8), 
     (("Hurricane", "Cold"), ("Water", "Empty"), 70), 
 
@@ -292,6 +353,8 @@ synergy_list = [
     (("Mountain", "Lava"), ("Volcano", "Empty"), 3), 
     (("Volcano", "Lava"), ("No Change"), 5), 
     (("Mountain", "Volcano"), ("No Change"), 5), 
+    (("Volcano", "Volcano"), ("No Change"), 3), 
+    (("Volcano", "Water"), ("Volcano", "Steam"), 3), 
     (("Earth", "Energy"), ("Earthquake", "Empty"), 3), 
     (("Mountain", ("Tornado", "Energy", "Earthquake")), ("Landslide", "Empty"), 3), 
     (("Landslide", ("Stone", "Earth")), ("Earth", "Earth"), 50), 
@@ -304,11 +367,15 @@ synergy_list = [
     (("Wave", ("Wave", "Energy", "Wind")), ("Tsunami", "Empty"), 3), 
 
     # ocean things
-    (("Water", "Water"), ("Ocean", "Empty"), 3),                  # ocean/wave/sand
-    (("Ocean", ("Wind", "Ocean", "Energy")), ("Wave", "Empty"), 3), 
-    (("Stone", ("Wave", "Cold", "Wind")), ("Sand", "Empty"), 8), 
-    (("Ocean", "Stone"), ("Ocean", "Sand"), 8), 
-    (("Ocean", "Fire"), ("Ocean", "Steam"), 3), 
+    (("Water", "Water"), ("Lake", "Empty"), 3),                  # ocean/wave/sand
+    (("Lake", ("Water", "Lake")), ("Ocean", "Empty"), 3),
+    (("Ocean", ("Wind", "Energy")), ("Wave", "Empty"), 3), 
+    (("Ocean", "Ocean"), ("Ocean", "Wave"), 3), 
+    (("Ocean", "Lake"), ("Ocean", "Ocean"), 3), 
+    (("Stone", ("Wave", "Cold", "Wind")), ("Sand", "Empty"), 15), 
+    (("Stone", "Plants"), ("Sand", "Plants"), 10), 
+    ((("Ocean", "Sun"), "Stone"), ("No Change", "Sand"), 10), 
+    ((("Ocean", "Lake"), "Fire"), ("No Change", "Steam"), 10), 
     (("Ocean", ("Volcano", "Lava", "Mountain")), ("Island", "Empty"), 3), 
     (("Ocean", ("Wood", "Metal")), ("Ocean", "Boat"), 3),
     (("Ocean", "Sand"), ("Beach", "Empty"), 3),
@@ -322,10 +389,36 @@ synergy_list = [
 
     (("Ocean", ("Wave", "Beach", "Fish", "Boat", "Tsunami")), ("No Change"), 10),
     (("Island", ("Ocean", "Plants", "Fish")), ("No Change"), 10), 
+    (("Lake", ("Fish", "Boat")), ("No Change"), 5),
     (("Sand", "Sand"), ("No Change"), 5), 
     (("Island", "Island"), ("No Change"), 5), 
     (("Boat", "Boat"), ("No Change"), 5), 
     (("Turtle", ("Beach", "Ocean", "Island")), ("No Change"), 5),
+    (("Island", ("Volcano", "Tsunami", "Earthquake")), ("Ocean", "Earth"), 50), 
+
+    # desert things
+    (("Sand", ("Sand", "Wind")), ("Desert", "Empty"), 3), 
+    (("Desert", "Earth"), ("Desert", "Sand"), 3), 
+    (("Desert", ("Water", "Rain")), ("Oasis", "Empty"), 3), 
+    (("Desert", "Tornado"), ("Desert", "Sandstorm"), 3), 
+    
+    (("Desert", "Fire"), ("Sand", "Glassware"), 75), 
+    (("Desert", "Lava"), ("Stone", "Stone"), 75),
+    (("Desert", "Volcano"), ("Stone", "Mountain"), 75),  
+    (("Desert", "Phoenix"), ("Glassware", "Phoenix"), 75), 
+
+    (("Oasis", "Fire"), ("Desert", "Steam"), 75), 
+    (("Oasis", "Lava"), ("Desert", "Stone"), 75), 
+    (("Oasis", "Volcano"), ("Desert", "Mountain"), 75), 
+    (("Oasis", "Phoenix"), ("Desert", "Phoenix"), 75), 
+
+    (("Desert", "Wind"), ("Sand", "Sand"), 75), 
+    (("Oasis", ("Sandstorm", "Tornado", "Blizzard", "Duststorm", "Sandstorm")), ("Sand", "Sand"), 75), 
+    ((("Desert", "Oasis"), "Tsunami"), ("Sand", "Water"), 75),  
+     
+    (("Desert", ("Cactus", "Sand", "Oasis", "Sandstorm", "Desert", "Sun")), ("No Change"), 8),
+    (("Oasis", ("Cactus", "Sand", "Oasis", "Wave", "Rain", "Water")), ("No Change"), 6),
+
 ]
 
 def x_in_y(element, group):         # The regular "in" function can't diffrentiate properly between
@@ -384,22 +477,87 @@ def check_for_synergy(elements):            # takes in tuple of reactant element
 # likely won't do food. it'd fill up the shop a lot.
 # would likely only have some general food instead of multiple, or none at all.
 
-# light/energy + light/energy --> sun
-#   sun buffs plants like light but isn't consumed
-#   also burns snow/cold things without being consumed
-#   cannot burn plants/coal or anything that make co2/ash (other than snow)
-#   can make ceramic, glass, steam
-# sun + sun --> energy + energy  
+# magnetic field
+# would need more reactions to be added
+#   electricity + metal --> magnetic field
+#   magnetic field + metal --> electricity
+#
+#   magnetic field + rock --> metal
+#
+#   magnetic field + robot/ai/android/vocaloid --> electricity + metal
+#
+#   electricity + electricity --> no change (7g)
+#   magnetic field + magnetic field --> no change (7g)
+#   magnetic field + electricity --> no change (18g)
+# 
+#   sun + magnetic field --> sun + aurora borealis
 
-# possible symbol: void
-# human + void --> mage
-# mage + fire/water/earth/air/energy/clay/wind/lava/cold/steam/stone/metal/electricity/sand/ice/light/snow/void
-#             --> mage 
+# sulfur
+# would need more reactions to be added
+#   miner + volcano --> miner + sulfur
+#   sulfur + coal --> explosive powder
+#       explosive powder + fire --> energy + energy (x00g)
+#   lake + fire/lava/sulfur --> hotspring
+#   lake + phoenix/volcano --> hotspring + no change
+#   sulfur + cloud/rain --> acid rain
+#       could harm living, not sure.
 
-# balancing of current strats:
-#   Living being strats
-#   Burning strats
-#   Ocean strats
-#   Sandstorm strats
-#   Snow strats
-#   Gold strats
+# mythological creatures
+#   bird + electricity --> thunderbird
+#   electricity + life --> raiju
+#   thunderbird/raiju + electricity --> no change
+#       might not do thunderbird, already a mythical bird.
+#   ___ + ___ --> kumiho
+#   kumiho + human --> kumiho
+#       slain by hero
+#   human + fire --> demon
+#       demon + fire/lava --> no change
+#       slays all living things
+#       sets everything nearby ablaze
+#           this part is kind of a pain to add
+#       slain by hero
+#       demon + angel --> empty + empty
+#       demon + boat --> charon
+#       should look like s-tier husbando material to compensate for miku being waifu material
+
+#   tree + life --> world tree
+#       world tree + human --> elf + world tree
+#       elf + plants/tree/forest/swamp/mangrove/world tree/beast/bird/penguin/turtle/fish --> no change
+
+# dust expansion
+#   coal dust
+#       burns
+#   sawdust
+#       burns
+#   metal dust
+#   volcanic dust
+#   magic dust
+# all can form dust storm
+
+# other ideas:
+#   something that spreads to empty tiles
+#   group of things that all eat a fraction of everything, all of them sum to eat everything
+
+#####
+
+# Types of elements.
+#   This list is used so I can see what I have already made and what I could make.
+
+# Main expected strategies:     [Normally what carries a run.]
+#   Living
+#       Robotics (partially living)
+#   Burning
+#   Oceanic
+#   Snowing
+#   Desert
+#   Environmentalist
+
+# Side strategies:              [Useful to assist a run though could carry it, too.]
+#   Mountainous 
+#   Gold
+#   Clouds
+
+# Additional tools:             [Things that come and go.]
+#   Ceramic/glassware
+#   Black Hole
+#   Dust + Duststorm
