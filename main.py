@@ -106,8 +106,10 @@ def menu():
         window.blit(font.render(text, True, (255, 255, 255)), pygame.Rect(50, 150, 50, 50))
         text = "Advance to the next cycle to do all reactions and gain gold."
         window.blit(font.render(text, True, (255, 255, 255)), pygame.Rect(50, 250, 50, 50))
+        text = "  *Mouse1 (normally left click) to advance 1, mouse2 (normally right click) to advance many."
+        window.blit(medium_font.render(text, True, (255, 255, 255)), pygame.Rect(50, 300, 50, 50))
         text = "Get enough gold to pay off each payment."
-        window.blit(font.render(text, True, (255, 255, 255)), pygame.Rect(50, 350, 50, 50))
+        window.blit(font.render(text, True, (255, 255, 255)), pygame.Rect(50, 380, 50, 50))
 
         pygame.display.flip()
     
@@ -124,21 +126,27 @@ def lose_screen(gold, payment):
     total_gold_earnt = 50*(payment_lost_at**2 + payment_lost_at) + gold     # quadratic equation
 
     # getting rank
-    rank = "SSS"                    # assumes highest rank until proven otherwise
-    rank_color = (255, 255, 0)
     score_list = (
         (0, 250, "F", (255, 0, 0)),
         (251, 1000, "D", (200, 50, 50)),
         (1001, 3000, "C", (200, 100, 0)),
         (3001, 10000, "B", (100, 100, 0)),
         (10001, 50000, "A", (0, 240, 0)),
-        (50001, 150000, "S", (240, 180, 0)),
-        (150001, 250000, "SS", (240, 220, 0)),
+        (50001, 175000, "S", (240, 180, 0)),
+        (175001, 300000, "SS", (240, 220, 0)),
     )
+    # first seeing the if top and bottom ranks
+    if total_gold_earnt > 300000:
+        rank = "SSS"
+        rank_color = (255, 255, 0)
+    elif total_gold_earnt < 0:
+        rank = "FFF"
+        rank_color = (100, 0, 0)
     for score in score_list:
         if score[0] <= total_gold_earnt <= score[1]:
             rank = score[2]
             rank_color = score[3]
+            break
 
     while True:
         for evt in pygame.event.get():
@@ -165,9 +173,9 @@ def lose_screen(gold, payment):
         window.blit(big_font.render("You missed payment.", True, (200, 200, 255)), pygame.Rect(50, 50, 195, 60))
         window.blit(font.render(f"You lost at payment {payment_lost_at}.", True, 
                                 (200, 200, 255)), pygame.Rect(70, 150, 195, 60))
-        window.blit(font.render(f"You missed payment by {(abs(gold))}g.", True, 
+        window.blit(font.render(f"You missed payment by {abs(gold)}g.", True, 
                                 (200, 200, 255)), pygame.Rect(70, 200, 195, 60))
-        window.blit(font.render(f"You earnt a total of {abs(total_gold_earnt)}g.", True, 
+        window.blit(font.render(f"You earnt a total of {total_gold_earnt}g.", True, 
                                 (200, 200, 255)), pygame.Rect(70, 250, 195, 60))
         window.blit(font.render(f"{rank} Rank", True, rank_color), pygame.Rect(70, 300, 195, 60))
 
@@ -202,7 +210,7 @@ def main():
     
     show_FPS = False
     previous_backspace = False
-    FPS_list = [60, 60, 60, 60, 60] 
+    FPS_list = [60, 60, 60, 60] 
 
     # main loop
     while True:
@@ -262,7 +270,7 @@ def main():
             y += 89
             x = 75
 
-        # store things
+        # store (shop) things
         x = 765
         y = 184
         for element in purchase_selection:
@@ -306,7 +314,7 @@ def main():
         # next cycle things
         touching_next_cycle_button = mouse_rect.colliderect(pygame.Rect(480, 555, 135, 40))
         draw.next_cycle(window, touching_next_cycle_button, turns_to_next_cycle, payment)
-        if touching_next_cycle_button and valid_click:
+        if touching_next_cycle_button and (valid_click or pygame.mouse.get_pressed()[2]):
             turns_to_next_cycle -= 1
             bought_from_store = False
             
