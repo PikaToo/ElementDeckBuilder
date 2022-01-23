@@ -318,14 +318,13 @@ def main():
             turns_to_next_cycle -= 1
             bought_from_store = False
             
-            dx = 0
-            dy = 0
             change_list = []
             previous_reactions = []
 
             # cycles through each element for reactions
-            for row in deck:
-                for element in row:
+            for dy, row in enumerate(deck):                  # enumerate keeps track of index without needing dy += 1
+                for dx, element in enumerate(row):
+
                     # gold earnt is tracked throughout, given all at once in the end.
                     gold_earnt = gold_from(element)
 
@@ -334,17 +333,15 @@ def main():
                         adjacenct_list = ((dx-1, dy+1), (dx, dy+1), (dx+1, dy+1), (dx-1, dy), (dx+1, dy),
                                     (dx-1, dy-1), (dx, dy-1), (dx+1, dy-1),)
                         for adjacency in adjacenct_list:
+
                             # only does it for valid adjacencies (i.e. not off the map, not empty)
                             if 0 <= adjacency[1] <= 3 and 0 <= adjacency[0] <= 6:
                                 elements_to_check = (deck[dy][dx], deck[adjacency[1]][adjacency[0]])
                                 if elements_to_check[1] != "Empty":
 
-                                    # gets information from check_for_synergy function
                                     synergy_present, synergy = check_for_synergy(elements_to_check)
-                                    
                                     if synergy_present:  # if there is a synergy, proceeds to next step.
 
-                                        # splits synergy into easier-to-understand pieces
                                         reactants, products, gold_from_reaction = synergy
                                         
                                         # assumes synergy is valid. invalidates if the first element has already been consumed.
@@ -376,10 +373,6 @@ def main():
                     # giving gold
                     gold += gold_earnt
                     draw.add_gold(str(gold_earnt), ((90*dx)+98), ((dy*89)+184))
-
-                    dx += 1
-                dy += 1
-                dx = 0
             
             for change in change_list:                  # does all changes at once at the end.
                 deck[change[0]][change[1]] = change[2]
