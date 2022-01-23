@@ -91,7 +91,7 @@ element_list = (
         ("Ice Wall",        5,      "A solid layer of ice brick that insulates quite well."),
         ("Tree",            5,      "Plants that are larger, stronger, and useful in data science."),
         ("Oasis",           5,      "A fertile part of land in an otherwise harsh landscape."),
-        ("Circuit",         5,      "A programmable chip that taste quite bitter."),
+        ("Circuit",         5,      "A programmable chip that tastes quite bitter."),
         ("Gold",            6,      "Heavy, soft, and pretty."),
         ("Music",           6,      "Arranged sounds."),
         ("Thunder",         6,      "The power of Zeus."),
@@ -1821,12 +1821,7 @@ icon_dictionary = {
 ),
 }
 
-
-def element_interior(window, x, y, element, mouse_rect):
-    interior_rect = pygame.Rect(x, y, 75, 75)
-    x += 9
-    y += 9
-    color_list = (
+color_list = (
         ("Y", (200, 200, 50)),      # Y | yellow
         ("y", (250, 250, 120)),     # y | bright yellow
         ("d", (30, 100, 30)),       # d | dark green
@@ -1852,26 +1847,35 @@ def element_interior(window, x, y, element, mouse_rect):
         ("A", (255, 220, 0)),       # A | gold 
         ("n", (10, 10, 10)),        # n | light black  
         ("T", (100, 200, 255)),     # T | turquoise
-
     )
+
+def element_interior(window, x, y, element, mouse_rect):
+    interior_rect = pygame.Rect(x, y, 75, 75)
+    x += 9
+    y += 9
+
     icon = []                           # blank for if element is blank or not defined.
     if element != "Empty":
         if element in icon_dictionary:          # to stop crashes when an invalid icon is found
             icon = icon_dictionary[element] # getting element art
 
-    # looping through the whole image. using different x/y since its used again later.
+
+    # looping through the whole image. using different x/y since it's used again later.
     x_ = x
     y_ = y
     for row in icon:
         for value in row:
+            
             # picking color and drawing
             for color in color_list:
                 if value == color[0]:
                     pygame.draw.rect(window, color[1], pygame.Rect(x_, y_, 4, 4))
-            
+                    break
+
             x_ += 4
         x_ = x
         y_ += 4
+
 
     if element != "Empty" and interior_rect.colliderect(mouse_rect):
         pygame.draw.rect(window, (40, 40, 40), pygame.Rect(745, 285, 395, 255))
